@@ -1,3 +1,5 @@
+import os
+import gdown
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -5,7 +7,20 @@ import joblib
 import shap
 
 from sklearn.preprocessing import StandardScaler
-from detector import EnhancedIsolationForestDetector  # Or define your class here
+from detector import EnhancedIsolationForestDetector 
+
+
+model_path = "fraud_detector_model.pkl"
+
+# Only download if file not already cached
+if not os.path.exists(model_path):
+    url = "https://drive.google.com/uc?id=1sjPsY2SIeTuzbu-Y5_2yWzatE6CFP3LL"
+    gdown.download(url, model_path, quiet=False)
+
+
+detector = EnhancedIsolationForestDetector()
+detector.load_model(model_path)
+
 
 # -------------------- Load Model --------------------
 detector = EnhancedIsolationForestDetector()
